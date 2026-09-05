@@ -7,10 +7,17 @@ Lê o promod.db em modo somente-leitura (não interfere no bot rodando).
 
 import html
 import os
+import re
 import sqlite3
 import subprocess
 from datetime import datetime
 from pathlib import Path
+
+
+def limpar_tags_telegram(texto):
+    """Remove tags HTML (ex: <b>, </b>) usadas na formatação do Telegram,
+    que não fazem sentido exibidas como texto cru numa página web."""
+    return re.sub(r"<[^>]+>", "", texto)
 
 # --- Configuração ---
 DB_PATH = os.path.expanduser("~/projetos/alertapromod/promod.db")
@@ -64,7 +71,7 @@ def montar_card(oferta):
 
     cupom_html = ""
     if cupom:
-        cupom_html = f'<p class="cupom">{html.escape(cupom)}</p>'
+        cupom_html = f'<p class="cupom">{html.escape(limpar_tags_telegram(cupom))}</p>'
 
     if foto:
         img_html = f'<img src="{html.escape(foto)}" alt="{titulo}" loading="lazy" width="96" height="96">'
