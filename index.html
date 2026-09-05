@@ -28,7 +28,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 .topo {
-  max-width: 640px;
+  max-width: 720px;
   margin: 0 auto;
   padding: 2.25rem 1.25rem 1.25rem;
   text-align: center;
@@ -90,7 +90,7 @@ body {
 @keyframes pulsar { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
 
 .quem-somos {
-  max-width: 640px;
+  max-width: 720px;
   margin: 0 auto 1.5rem;
   padding: 0 1.25rem;
 }
@@ -105,84 +105,105 @@ body {
 }
 
 .feed {
-  max-width: 640px;
+  max-width: 720px;
   margin: 0 auto;
   padding: 0 1.25rem 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.9rem;
 }
 .oferta {
   display: flex;
-  gap: 1rem;
-  padding: 1.1rem 0;
-  border-top: 1px solid var(--linha);
+  flex-direction: column;
+  background: var(--superficie);
+  border: 1px solid var(--linha);
+  border-radius: 10px;
+  overflow: hidden;
   text-decoration: none;
   color: inherit;
 }
 .oferta:focus-visible {
   outline: 2px solid var(--vermelho);
-  outline-offset: 4px;
+  outline-offset: 2px;
 }
 .foto-wrap {
   position: relative;
-  flex: none;
-  width: 92px; height: 92px;
+  width: 100%;
+  aspect-ratio: 1 / 1;
 }
 .foto-wrap img, .foto-vazia {
   width: 100%; height: 100%;
   object-fit: cover;
-  border-radius: 6px;
   display: block;
-  background: var(--superficie);
+  background: #38342f;
   color: transparent;
 }
 .tag {
   position: absolute;
-  left: -6px; bottom: -6px;
+  left: 0; top: 10px;
   background: var(--vermelho);
   color: #fff;
   font-weight: 600;
-  font-size: 0.7rem;
-  padding: 2px 7px 2px 10px;
-  clip-path: polygon(12% 0, 100% 0, 100% 100%, 12% 100%, 0 50%);
-}
-.info { min-width: 0; flex: 1; }
-.loja {
-  margin: 0 0 0.15rem;
   font-size: 0.72rem;
+  padding: 3px 10px 3px 8px;
+  clip-path: polygon(0 0, 100% 0, 88% 100%, 0 100%);
+}
+.preco-overlay {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 1.6rem 0.6rem 0.5rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.82), rgba(0,0,0,0.35) 65%, transparent);
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+.preco {
+  font-family: 'Anton', sans-serif;
+  font-weight: 400;
+  font-size: 1.25rem;
+  color: #fff;
+  line-height: 1;
+}
+.preco-original {
+  font-size: 0.72rem;
+  color: #cfc9c0;
+  text-decoration: line-through;
+}
+.info { padding: 0.65rem 0.7rem 0.8rem; min-width: 0; }
+.loja {
+  margin: 0 0 0.25rem;
+  font-size: 0.68rem;
   color: var(--texto-fraco);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+.avaliacao {
+  color: var(--amarelo);
 }
 .titulo {
-  margin: 0 0 0.4rem;
-  font-size: 0.92rem;
-  line-height: 1.3;
+  margin: 0 0 0.5rem;
+  font-size: 0.82rem;
+  line-height: 1.32;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-.precos {
+.badges {
   display: flex;
-  align-items: baseline;
-  gap: 0.5rem;
-  margin: 0;
+  flex-direction: column;
+  gap: 0.3rem;
 }
-.preco {
-  font-family: 'Anton', sans-serif;
-  font-weight: 400;
-  font-size: 1.3rem;
-  color: var(--vermelho);
-}
-.preco-original {
-  font-size: 0.8rem;
-  color: var(--texto-fraco);
-  text-decoration: line-through;
-}
-.cupom {
-  margin: 0.3rem 0 0;
-  font-size: 0.75rem;
+.badge {
+  font-size: 0.68rem;
   color: var(--amarelo);
+  line-height: 1.25;
 }
 .rodape {
-  max-width: 640px;
+  max-width: 720px;
   margin: 0 auto;
   padding: 1.5rem 1.25rem 3rem;
   color: var(--texto-fraco);
@@ -191,8 +212,8 @@ body {
 }
 .rodape p { margin: 0 0 0.4rem; }
 .rodape p:last-child { margin-bottom: 0; }
-@media (min-width: 520px) {
-  .foto-wrap { width: 108px; height: 108px; }
+@media (min-width: 620px) {
+  .feed { grid-template-columns: repeat(3, 1fr); }
   .tagline { font-size: 1.75rem; }
 }
 </style>
@@ -218,174 +239,203 @@ body {
 
     <a class="oferta" href="https://s.shopee.com.br/4qFPRiZKPB" target="_blank" rel="nofollow sponsored noopener">
       <div class="foto-wrap">
-        <img src="https://cf.shopee.com.br/file/ab645a5cd9ed2d9301f3ed3a2c376502" alt="4 Pares Halter Original Hidro 1 Kg a 2 Kg No Plastico - 8 Halteres Profissional Promoção" loading="lazy" width="96" height="96">
+        <img src="https://cf.shopee.com.br/file/ab645a5cd9ed2d9301f3ed3a2c376502" alt="4 Pares Halter Original Hidro 1 Kg a 2 Kg No Plastico - 8 Halteres Profissional Promoção" loading="lazy">
         <span class="tag">-20%</span>
-      </div>
-      <div class="info">
-        <p class="loja">Shopee</p>
-        <p class="titulo">4 Pares Halter Original Hidro 1 Kg a 2 Kg No Plastico - 8 Halteres Profissional Promoção</p>
-        <p class="precos">
+        <div class="preco-overlay">
           <span class="preco">R$ 160,80</span>
           
-        </p>
-        <p class="cupom">💰 Esse é o preço base, com opção de parcelamento.
-🚨 NO PIX PODE FICAR MAIS BARATOOOO!</p>
+        </div>
+      </div>
+      <div class="info">
+        <p class="loja">Shopee <span class="avaliacao">★ 5.0</span></p>
+        <p class="titulo">4 Pares Halter Original Hidro 1 Kg a 2 Kg No Plastico - 8 Halteres Profissional Promoção</p>
+        <div class="badges"><span class="badge">💳 Pix pode sair mais barato</span></div>
       </div>
     </a>
 
     <a class="oferta" href="https://s.shopee.com.br/BTZt8r5sD" target="_blank" rel="nofollow sponsored noopener">
       <div class="foto-wrap">
-        <img src="https://cf.shopee.com.br/file/br-11134207-820lj-mp9w8lepqpdsbd" alt="Par Halter Emborrachado 1kg a 5kg | Peso de Academia Musculação Halteres Fisioterapia Treino Em Casa" loading="lazy" width="96" height="96">
+        <img src="https://cf.shopee.com.br/file/br-11134207-820lj-mp9w8lepqpdsbd" alt="Par Halter Emborrachado 1kg a 5kg | Peso de Academia Musculação Halteres Fisioterapia Treino Em Casa" loading="lazy">
         <span class="tag">-37%</span>
-      </div>
-      <div class="info">
-        <p class="loja">Shopee</p>
-        <p class="titulo">Par Halter Emborrachado 1kg a 5kg | Peso de Academia Musculação Halteres Fisioterapia Treino Em Casa</p>
-        <p class="precos">
+        <div class="preco-overlay">
           <span class="preco">R$ 42,89</span>
           
-        </p>
-        <p class="cupom">💰 Esse é o preço base, com opção de parcelamento.
-🚨 NO PIX PODE FICAR MAIS BARATOOOO!</p>
+        </div>
+      </div>
+      <div class="info">
+        <p class="loja">Shopee <span class="avaliacao">★ 5.0</span></p>
+        <p class="titulo">Par Halter Emborrachado 1kg a 5kg | Peso de Academia Musculação Halteres Fisioterapia Treino Em Casa</p>
+        <div class="badges"><span class="badge">💳 Pix pode sair mais barato</span></div>
       </div>
     </a>
 
     <a class="oferta" href="https://s.shopee.com.br/1A9gprjDA" target="_blank" rel="nofollow sponsored noopener">
       <div class="foto-wrap">
-        <img src="https://cf.shopee.com.br/file/br-11134207-820ls-mlcnkp6a0g79a4" alt="Par Halter Academia Musculação Treino em Casa 5kg Cada Kit Halteres (Duas Unidades)" loading="lazy" width="96" height="96">
+        <img src="https://cf.shopee.com.br/file/br-11134207-820ls-mlcnkp6a0g79a4" alt="Par Halter Academia Musculação Treino em Casa 5kg Cada Kit Halteres (Duas Unidades)" loading="lazy">
         <span class="tag">-36%</span>
-      </div>
-      <div class="info">
-        <p class="loja">Shopee</p>
-        <p class="titulo">Par Halter Academia Musculação Treino em Casa 5kg Cada Kit Halteres (Duas Unidades)</p>
-        <p class="precos">
+        <div class="preco-overlay">
           <span class="preco">R$ 79,90</span>
           
-        </p>
-        <p class="cupom">💰 Esse é o preço base, com opção de parcelamento.
-🚨 NO PIX PODE FICAR MAIS BARATOOOO!</p>
+        </div>
+      </div>
+      <div class="info">
+        <p class="loja">Shopee <span class="avaliacao">★ 4.9</span></p>
+        <p class="titulo">Par Halter Academia Musculação Treino em Casa 5kg Cada Kit Halteres (Duas Unidades)</p>
+        <div class="badges"><span class="badge">💳 Pix pode sair mais barato</span></div>
       </div>
     </a>
 
     <a class="oferta" href="https://www.amazon.com.br/Climatizador-Evaporativo-ZLX-20-Fun%C3%A7%C3%B5es-Zellox/dp/B0DZXX9PS8?tag=alertapromod-20" target="_blank" rel="nofollow sponsored noopener">
       <div class="foto-wrap">
-        <img src="https://m.media-amazon.com/images/I/51h4P+Twj3L._AC_SY300_SX300_QL70_ML2_.jpg" alt="Climatizador de Ar Evaporativo ZLX-20 TS80W 20 Litros 220V 4 Funções Zellox" loading="lazy" width="96" height="96">
+        <img src="https://m.media-amazon.com/images/I/51h4P+Twj3L._AC_SY300_SX300_QL70_ML2_.jpg" alt="Climatizador de Ar Evaporativo ZLX-20 TS80W 20 Litros 220V 4 Funções Zellox" loading="lazy">
         <span class="tag">-15%</span>
-      </div>
-      <div class="info">
-        <p class="loja">Amazon</p>
-        <p class="titulo">Climatizador de Ar Evaporativo ZLX-20 TS80W 20 Litros 220V 4 Funções Zellox</p>
-        <p class="precos">
+        <div class="preco-overlay">
           <span class="preco">R$ 341,90</span>
           <span class="preco-original">R$ 399,90</span>
-        </p>
-        <p class="cupom">💳 7x de R$ 54,28 sem juros
+        </div>
+      </div>
+      <div class="info">
+        <p class="loja">Amazon <span class="avaliacao">★ 4.0 (79)</span></p>
+        <p class="titulo">Climatizador de Ar Evaporativo ZLX-20 TS80W 20 Litros 220V 4 Funções Zellox</p>
+        <div class="badges"><span class="badge">📦 Frete grátis</span><span class="badge">💳 7x de R$ 54,28 sem juros
 🎟️ CUPOM:
-   • CUPOMNOAPP — R$10 off</p>
+   • CUPOMNOAPP — R$10 off</span></div>
       </div>
     </a>
 
     <a class="oferta" href="https://www.mercadolivre.com.br/kit-6-tapete-higienico-lavavel-caes-cachorro-grande-xixi-dog/up/MLBU1456379800?matt_tool=65481811&amp;matt_word=darlankawakami" target="_blank" rel="nofollow sponsored noopener">
       <div class="foto-wrap">
-        <img src="https://http2.mlstatic.com/D_NQ_NP_2X_649926-MLB115485707683_082026-F-kit-6-tapete-higienico-lavavel-caes-cachorro-grande-xixi-dog.webp" alt="Kit 6 Tapetes Higiênicos Laváveis Cães" loading="lazy" width="96" height="96">
+        <img src="https://http2.mlstatic.com/D_NQ_NP_2X_649926-MLB115485707683_082026-F-kit-6-tapete-higienico-lavavel-caes-cachorro-grande-xixi-dog.webp" alt="Kit 6 Tapetes Higiênicos Laváveis Cães" loading="lazy">
         <span class="tag">-19%</span>
-      </div>
-      <div class="info">
-        <p class="loja">Mercado Livre</p>
-        <p class="titulo">Kit 6 Tapetes Higiênicos Laváveis Cães</p>
-        <p class="precos">
+        <div class="preco-overlay">
           <span class="preco">R$ 80,67</span>
           <span class="preco-original">R$ 99,00</span>
-        </p>
-        
+        </div>
+      </div>
+      <div class="info">
+        <p class="loja">Mercado Livre <span class="avaliacao">★ 4.7 (720)</span></p>
+        <p class="titulo">Kit 6 Tapetes Higiênicos Laváveis Cães</p>
+        <div class="badges"><span class="badge">📦 Frete grátis</span></div>
       </div>
     </a>
 
     <a class="oferta" href="https://www.amazon.com.br/dp/B0H6H77Y3Y?r&amp;tag=alertapromod-20" target="_blank" rel="nofollow sponsored noopener">
       <div class="foto-wrap">
-        <img src="https://m.media-amazon.com/images/I/51jH-4I0RBL._AC_SX300_SY300_QL70_ML2_.jpg" alt="Pote Vidro Transparente 650ml Retangular" loading="lazy" width="96" height="96">
+        <img src="https://m.media-amazon.com/images/I/51jH-4I0RBL._AC_SX300_SY300_QL70_ML2_.jpg" alt="Pote Vidro Transparente 650ml Retangular" loading="lazy">
         <span class="tag">-17%</span>
-      </div>
-      <div class="info">
-        <p class="loja">Amazon</p>
-        <p class="titulo">Pote Vidro Transparente 650ml Retangular</p>
-        <p class="precos">
+        <div class="preco-overlay">
           <span class="preco">R$ 19,99</span>
           <span class="preco-original">R$ 23,99</span>
-        </p>
-        <p class="cupom">🎟️ CUPOM:
-   • CUPOMNOAPP — R$10 off</p>
+        </div>
+      </div>
+      <div class="info">
+        <p class="loja">Amazon <span class="avaliacao">★ 5.0 (1)</span></p>
+        <p class="titulo">Pote Vidro Transparente 650ml Retangular</p>
+        <div class="badges"><span class="badge">📦 Frete grátis</span><span class="badge">🎟️ CUPOM:
+   • CUPOMNOAPP — R$10 off</span></div>
       </div>
     </a>
 
     <a class="oferta" href="https://produto.mercadolivre.com.br/MLB-4332011417-chinelo-qix-full-casual-adulto-masculino-feminino-liso-eva-_JM?matt_tool=65481811&amp;matt_word=darlankawakami" target="_blank" rel="nofollow sponsored noopener">
       <div class="foto-wrap">
-        <img src="https://http2.mlstatic.com/D_NQ_NP_2X_813888-MLB99738572955_112025-F-chinelo-qix-full-casual-adulto-masculino-feminino-liso-eva.webp" alt="Chinelo Qix Full (5 cores)" loading="lazy" width="96" height="96">
+        <img src="https://http2.mlstatic.com/D_NQ_NP_2X_813888-MLB99738572955_112025-F-chinelo-qix-full-casual-adulto-masculino-feminino-liso-eva.webp" alt="Chinelo Qix Full (5 cores)" loading="lazy">
         <span class="tag">-19%</span>
-      </div>
-      <div class="info">
-        <p class="loja">Mercado Livre</p>
-        <p class="titulo">Chinelo Qix Full (5 cores)</p>
-        <p class="precos">
+        <div class="preco-overlay">
           <span class="preco">R$ 79,92</span>
           <span class="preco-original">R$ 99,00</span>
-        </p>
-        
+        </div>
+      </div>
+      <div class="info">
+        <p class="loja">Mercado Livre <span class="avaliacao">★ 5.0 (15)</span></p>
+        <p class="titulo">Chinelo Qix Full (5 cores)</p>
+        <div class="badges"><span class="badge">📦 Frete grátis</span></div>
       </div>
     </a>
 
     <a class="oferta" href="https://www.amazon.com.br/Sanduicheira-Grill-Philco-56701015-Preto/dp/B07B63NTRZ/?tag=alertapromod-20" target="_blank" rel="nofollow sponsored noopener">
       <div class="foto-wrap">
-        <img src="https://m.media-amazon.com/images/I/5131X1N1gWL._AC_SY300_SX300_QL70_ML2_.jpg" alt="Philco Grill e Sanduicheira Inox PGR021 127V" loading="lazy" width="96" height="96">
+        <img src="https://m.media-amazon.com/images/I/5131X1N1gWL._AC_SY300_SX300_QL70_ML2_.jpg" alt="Philco Grill e Sanduicheira Inox PGR021 127V" loading="lazy">
         <span class="tag">-11%</span>
-      </div>
-      <div class="info">
-        <p class="loja">Amazon</p>
-        <p class="titulo">Philco Grill e Sanduicheira Inox PGR021 127V</p>
-        <p class="precos">
+        <div class="preco-overlay">
           <span class="preco">R$ 199,90</span>
           <span class="preco-original">R$ 224,03</span>
-        </p>
-        
+        </div>
+      </div>
+      <div class="info">
+        <p class="loja">Amazon <span class="avaliacao">★ 4.8 (993)</span></p>
+        <p class="titulo">Philco Grill e Sanduicheira Inox PGR021 127V</p>
+        <div class="badges"><span class="badge">📦 Frete grátis</span></div>
       </div>
     </a>
 
     <a class="oferta" href="https://www.amazon.com.br/Higiene-Bucal-Para-Viagem-Colgate/dp/B0FPMX5Y3F?tag=alertapromod-20" target="_blank" rel="nofollow sponsored noopener">
       <div class="foto-wrap">
-        <img src="https://m.media-amazon.com/images/I/51SGtaOlWxL._AC_SY300_SX300_QL70_ML2_.jpg" alt="Colgate Kit de Higiene Bucal para Viagem" loading="lazy" width="96" height="96">
+        <img src="https://m.media-amazon.com/images/I/51SGtaOlWxL._AC_SY300_SX300_QL70_ML2_.jpg" alt="Colgate Kit de Higiene Bucal para Viagem" loading="lazy">
         <span class="tag">-39%</span>
-      </div>
-      <div class="info">
-        <p class="loja">Amazon</p>
-        <p class="titulo">Colgate Kit de Higiene Bucal para Viagem</p>
-        <p class="precos">
+        <div class="preco-overlay">
           <span class="preco">R$ 19,99</span>
           <span class="preco-original">R$ 32,82</span>
-        </p>
-        
+        </div>
+      </div>
+      <div class="info">
+        <p class="loja">Amazon <span class="avaliacao">★ 4.7 (430)</span></p>
+        <p class="titulo">Colgate Kit de Higiene Bucal para Viagem</p>
+        <div class="badges"><span class="badge">📦 Frete grátis</span></div>
       </div>
     </a>
 
     <a class="oferta" href="https://www.mercadolivre.com.br/relogio-de-pendulo-decorativo-marrom-para-parede-retro/p/MLB23456952?matt_tool=65481811&amp;matt_word=darlankawakami" target="_blank" rel="nofollow sponsored noopener">
       <div class="foto-wrap">
-        <img src="https://http2.mlstatic.com/D_NQ_NP_2X_607939-MLA99483061898_112025-F.webp" alt="Relógio de Pêndulo Decorativo Marrom para Parede Retrô" loading="lazy" width="96" height="96">
+        <img src="https://http2.mlstatic.com/D_NQ_NP_2X_607939-MLA99483061898_112025-F.webp" alt="Relógio de Pêndulo Decorativo Marrom para Parede Retrô" loading="lazy">
         <span class="tag">-4%</span>
-      </div>
-      <div class="info">
-        <p class="loja">Mercado Livre</p>
-        <p class="titulo">Relógio de Pêndulo Decorativo Marrom para Parede Retrô</p>
-        <p class="precos">
+        <div class="preco-overlay">
           <span class="preco">R$ 69,33</span>
           <span class="preco-original">R$ 72,00</span>
-        </p>
-        
+        </div>
+      </div>
+      <div class="info">
+        <p class="loja">Mercado Livre <span class="avaliacao">★ 4.7 (2179)</span></p>
+        <p class="titulo">Relógio de Pêndulo Decorativo Marrom para Parede Retrô</p>
+        <div class="badges"><span class="badge">📦 Frete grátis</span></div>
+      </div>
+    </a>
+
+    <a class="oferta" href="https://s.shopee.com.br/5foWQ9bcqd" target="_blank" rel="nofollow sponsored noopener">
+      <div class="foto-wrap">
+        <img src="https://cf.shopee.com.br/file/sg-11134201-8259x-mrvatflnqjgo1e" alt="8 Conjunto de esfregão plano, balde dobrável e 6 panos de esfregão, com rodo automático." loading="lazy">
+        <span class="tag">-43%</span>
+        <div class="preco-overlay">
+          <span class="preco">R$ 73,99</span>
+          
+        </div>
+      </div>
+      <div class="info">
+        <p class="loja">Shopee <span class="avaliacao">★ 4.6</span></p>
+        <p class="titulo">8 Conjunto de esfregão plano, balde dobrável e 6 panos de esfregão, com rodo automático.</p>
+        <div class="badges"><span class="badge">💳 Pix pode sair mais barato</span></div>
+      </div>
+    </a>
+
+    <a class="oferta" href="https://s.shopee.com.br/5q7wcSazVe" target="_blank" rel="nofollow sponsored noopener">
+      <div class="foto-wrap">
+        <img src="https://cf.shopee.com.br/file/br-11134207-7r98o-mdajp8ugl2bl82" alt="Rodo de Limpeza Mop Limpeza Fácil Mope Esfregão Torção Refil Em Espuma Limpa Seca Rodo Mágico" loading="lazy">
+        <span class="tag">-61%</span>
+        <div class="preco-overlay">
+          <span class="preco">R$ 39,89</span>
+          
+        </div>
+      </div>
+      <div class="info">
+        <p class="loja">Shopee <span class="avaliacao">★ 4.9</span></p>
+        <p class="titulo">Rodo de Limpeza Mop Limpeza Fácil Mope Esfregão Torção Refil Em Espuma Limpa Seca Rodo Mágico</p>
+        <div class="badges"><span class="badge">💳 Pix pode sair mais barato</span></div>
       </div>
     </a>
 </main>
 
 <footer class="rodape">
   <p>Contém links de afiliado — ajuda a manter o projeto no ar sem custo pra você.</p>
-  <p>Gerado automaticamente pelo Alerta PromoD · última atualização em 05/09/2026 16:30</p>
+  <p>Gerado automaticamente pelo Alerta PromoD · última atualização em 05/09/2026 16:41</p>
 </footer>
 </body>
 </html>

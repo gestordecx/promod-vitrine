@@ -16,11 +16,16 @@ from pathlib import Path
 # --- Configuração ---
 DB_PATH = os.path.expanduser("~/projetos/alertapromod/promod.db")
 REPO_DIR = Path(__file__).resolve().parent  # pasta onde este script está
-QTD_OFERTAS = 10
+QTD_OFERTAS = 12
 
 LINK_TELEGRAM = "https://t.me/alertapromod"
 LINK_INSTAGRAM = "https://www.instagram.com/alertapromod/"
 LINK_WHATSAPP = "https://www.whatsapp.com/channel/0029Vb8pNYnA89MrDPvqhs0R"
+
+# Trecho genérico que a Shopee usa em quase toda oferta — repetir ele
+# igual em vários cards seguidos passa impressão de spam, então vira
+# um selinho curto em vez do parágrafo inteiro.
+BOILERPLATE_PIX = "no pix pode ficar mais"
 
 
 def limpar_tags_telegram(texto):
@@ -36,7 +41,7 @@ def buscar_ofertas():
     cur.execute(
         """
         SELECT titulo, link_afiliado, preco, preco_original, desconto,
-               loja, foto, cupom
+               loja, foto, cupom, frete_gratis, avaliacao, num_avaliacoes
         FROM ofertas
         WHERE status = 'aprovada'
         ORDER BY criado_em DESC
@@ -55,6 +60,30 @@ def fmt_preco(valor):
     return f"R$ {valor:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
 
+def montar_badges(oferta):
+    badges = []
+    if oferta.get("frete_gratis"):
+        badges.append("📦 Frete grátis")
+
+    cupom_raw = limpar_tags_telegram(oferta.get("cupom") or "").strip()
+    if cupom_raw:
+        if BOILERPLATE_PIX in cupom_raw.lower():
+            badges.append("💳 Pix pode sair mais barato")
+        else:
+            badges.append(cupom_raw)
+
+    return badges
+
+
+def montar_avaliacao_html(oferta):
+    avaliacao = (oferta.get("avaliacao") or "").strip()
+    if not avaliacao:
+        return ""
+    num = (oferta.get("num_avaliacoes") or "").strip()
+    texto = f"★ {avaliacao}" + (f" ({num})" if num else "")
+    return f'<span class="avaliacao">{html.escape(texto)}</span>'
+
+
 def montar_card(oferta):
     titulo = html.escape(oferta["titulo"] or "")
     loja = html.escape(oferta["loja"] or "")
@@ -63,7 +92,6 @@ def montar_card(oferta):
     preco = oferta["preco"] or 0
     preco_original = oferta["preco_original"] or 0
     desconto = oferta["desconto"] or 0
-    cupom = oferta["cupom"] or ""
 
     tag_html = ""
     if desconto and desconto > 0:
@@ -73,29 +101,30 @@ def montar_card(oferta):
     if preco_original and preco_original > preco:
         original_html = f'<span class="preco-original">{fmt_preco(preco_original)}</span>'
 
-    cupom_html = ""
-    if cupom:
-        cupom_html = f'<p class="cupom">{html.escape(limpar_tags_telegram(cupom))}</p>'
-
     if foto:
-        img_html = f'<img src="{html.escape(foto)}" alt="{titulo}" loading="lazy" width="96" height="96">'
+        img_html = f'<img src="{html.escape(foto)}" alt="{titulo}" loading="lazy">'
     else:
         img_html = '<div class="foto-vazia" aria-hidden="true"></div>'
+
+    badges_html = "".join(
+        f'<span class="badge">{html.escape(b)}</span>' for b in montar_badges(oferta)
+    )
+    avaliacao_html = montar_avaliacao_html(oferta)
 
     return f"""
     <a class="oferta" href="{link}" target="_blank" rel="nofollow sponsored noopener">
       <div class="foto-wrap">
         {img_html}
         {tag_html}
-      </div>
-      <div class="info">
-        <p class="loja">{loja}</p>
-        <p class="titulo">{titulo}</p>
-        <p class="precos">
+        <div class="preco-overlay">
           <span class="preco">{fmt_preco(preco)}</span>
           {original_html}
-        </p>
-        {cupom_html}
+        </div>
+      </div>
+      <div class="info">
+        <p class="loja">{loja} {avaliacao_html}</p>
+        <p class="titulo">{titulo}</p>
+        {f'<div class="badges">{badges_html}</div>' if badges_html else ''}
       </div>
     </a>"""
 
@@ -134,7 +163,7 @@ body {{
   -webkit-font-smoothing: antialiased;
 }}
 .topo {{
-  max-width: 640px;
+  max-width: 720px;
   margin: 0 auto;
   padding: 2.25rem 1.25rem 1.25rem;
   text-align: center;
@@ -196,7 +225,7 @@ body {{
 @keyframes pulsar {{ 0%, 100% {{ opacity: 1; }} 50% {{ opacity: 0.35; }} }}
 
 .quem-somos {{
-  max-width: 640px;
+  max-width: 720px;
   margin: 0 auto 1.5rem;
   padding: 0 1.25rem;
 }}
@@ -211,84 +240,105 @@ body {{
 }}
 
 .feed {{
-  max-width: 640px;
+  max-width: 720px;
   margin: 0 auto;
   padding: 0 1.25rem 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.9rem;
 }}
 .oferta {{
   display: flex;
-  gap: 1rem;
-  padding: 1.1rem 0;
-  border-top: 1px solid var(--linha);
+  flex-direction: column;
+  background: var(--superficie);
+  border: 1px solid var(--linha);
+  border-radius: 10px;
+  overflow: hidden;
   text-decoration: none;
   color: inherit;
 }}
 .oferta:focus-visible {{
   outline: 2px solid var(--vermelho);
-  outline-offset: 4px;
+  outline-offset: 2px;
 }}
 .foto-wrap {{
   position: relative;
-  flex: none;
-  width: 92px; height: 92px;
+  width: 100%;
+  aspect-ratio: 1 / 1;
 }}
 .foto-wrap img, .foto-vazia {{
   width: 100%; height: 100%;
   object-fit: cover;
-  border-radius: 6px;
   display: block;
-  background: var(--superficie);
+  background: #38342f;
   color: transparent;
 }}
 .tag {{
   position: absolute;
-  left: -6px; bottom: -6px;
+  left: 0; top: 10px;
   background: var(--vermelho);
   color: #fff;
   font-weight: 600;
-  font-size: 0.7rem;
-  padding: 2px 7px 2px 10px;
-  clip-path: polygon(12% 0, 100% 0, 100% 100%, 12% 100%, 0 50%);
-}}
-.info {{ min-width: 0; flex: 1; }}
-.loja {{
-  margin: 0 0 0.15rem;
   font-size: 0.72rem;
+  padding: 3px 10px 3px 8px;
+  clip-path: polygon(0 0, 100% 0, 88% 100%, 0 100%);
+}}
+.preco-overlay {{
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 1.6rem 0.6rem 0.5rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.82), rgba(0,0,0,0.35) 65%, transparent);
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}}
+.preco {{
+  font-family: 'Anton', sans-serif;
+  font-weight: 400;
+  font-size: 1.25rem;
+  color: #fff;
+  line-height: 1;
+}}
+.preco-original {{
+  font-size: 0.72rem;
+  color: #cfc9c0;
+  text-decoration: line-through;
+}}
+.info {{ padding: 0.65rem 0.7rem 0.8rem; min-width: 0; }}
+.loja {{
+  margin: 0 0 0.25rem;
+  font-size: 0.68rem;
   color: var(--texto-fraco);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}}
+.avaliacao {{
+  color: var(--amarelo);
 }}
 .titulo {{
-  margin: 0 0 0.4rem;
-  font-size: 0.92rem;
-  line-height: 1.3;
+  margin: 0 0 0.5rem;
+  font-size: 0.82rem;
+  line-height: 1.32;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }}
-.precos {{
+.badges {{
   display: flex;
-  align-items: baseline;
-  gap: 0.5rem;
-  margin: 0;
+  flex-direction: column;
+  gap: 0.3rem;
 }}
-.preco {{
-  font-family: 'Anton', sans-serif;
-  font-weight: 400;
-  font-size: 1.3rem;
-  color: var(--vermelho);
-}}
-.preco-original {{
-  font-size: 0.8rem;
-  color: var(--texto-fraco);
-  text-decoration: line-through;
-}}
-.cupom {{
-  margin: 0.3rem 0 0;
-  font-size: 0.75rem;
+.badge {{
+  font-size: 0.68rem;
   color: var(--amarelo);
+  line-height: 1.25;
 }}
 .rodape {{
-  max-width: 640px;
+  max-width: 720px;
   margin: 0 auto;
   padding: 1.5rem 1.25rem 3rem;
   color: var(--texto-fraco);
@@ -297,8 +347,8 @@ body {{
 }}
 .rodape p {{ margin: 0 0 0.4rem; }}
 .rodape p:last-child {{ margin-bottom: 0; }}
-@media (min-width: 520px) {{
-  .foto-wrap {{ width: 108px; height: 108px; }}
+@media (min-width: 620px) {{
+  .feed {{ grid-template-columns: repeat(3, 1fr); }}
   .tagline {{ font-size: 1.75rem; }}
 }}
 </style>
