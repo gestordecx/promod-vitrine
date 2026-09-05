@@ -13,16 +13,20 @@ import subprocess
 from datetime import datetime
 from pathlib import Path
 
+# --- Configuração ---
+DB_PATH = os.path.expanduser("~/projetos/alertapromod/promod.db")
+REPO_DIR = Path(__file__).resolve().parent  # pasta onde este script está
+QTD_OFERTAS = 10
+
+LINK_TELEGRAM = "https://t.me/alertapromod"
+LINK_INSTAGRAM = "https://www.instagram.com/alertapromod/"
+LINK_WHATSAPP = "https://www.whatsapp.com/channel/0029Vb8pNYnA89MrDPvqhs0R"
+
 
 def limpar_tags_telegram(texto):
     """Remove tags HTML (ex: <b>, </b>) usadas na formatação do Telegram,
     que não fazem sentido exibidas como texto cru numa página web."""
     return re.sub(r"<[^>]+>", "", texto)
-
-# --- Configuração ---
-DB_PATH = os.path.expanduser("~/projetos/alertapromod/promod.db")
-REPO_DIR = Path(__file__).resolve().parent  # pasta onde este script está
-QTD_OFERTAS = 10
 
 
 def buscar_ofertas():
@@ -107,17 +111,19 @@ def montar_html(ofertas):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Alerta PromoD — ofertas aprovadas agora</title>
 <meta name="description" content="Feed de ofertas aprovadas pelo Alerta PromoD na Amazon, Mercado Livre e Shopee, atualizado automaticamente.">
+<link rel="icon" type="image/png" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {{
-  --bg: #14161f;
-  --linha: #262938;
-  --texto: #f1eee3;
-  --texto-fraco: #9298ab;
-  --acento: #ff7a3d;
-  --sucesso: #7dd8a4;
+  --bg: #201f1d;
+  --linha: #3a3532;
+  --superficie: #2a2825;
+  --texto: #f5f0e8;
+  --texto-fraco: #a89f93;
+  --vermelho: #e2131b;
+  --amarelo: #fac304;
 }}
 * {{ box-sizing: border-box; }}
 html, body {{ margin: 0; padding: 0; }}
@@ -130,42 +136,84 @@ body {{
 .topo {{
   max-width: 640px;
   margin: 0 auto;
-  padding: 2.5rem 1.25rem 1.5rem;
+  padding: 2.25rem 1.25rem 1.25rem;
+  text-align: center;
 }}
-.marca {{
-  font-weight: 600;
-  margin: 0 0 0.75rem;
-  font-size: 0.95rem;
-  color: var(--texto-fraco);
+.logo {{
+  width: 168px;
+  height: auto;
+  display: block;
+  margin: 0 auto 1rem;
 }}
 .tagline {{
-  font-family: 'Fraunces', serif;
-  font-style: italic;
+  font-family: 'Anton', sans-serif;
+  font-weight: 400;
+  font-size: 1.5rem;
+  letter-spacing: 0.01em;
+  color: var(--vermelho);
+  margin: 0 0 0.6rem;
+}}
+.prova-social {{
+  font-size: 0.85rem;
+  color: var(--texto-fraco);
+  margin: 0 0 1.1rem;
+}}
+.canais {{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.4rem;
+  margin: 0 0 1.25rem;
+}}
+.canais a {{
+  color: var(--texto);
+  text-decoration: none;
+  font-size: 0.88rem;
   font-weight: 500;
-  font-size: 1.6rem;
-  line-height: 1.25;
-  margin: 0 0 1rem;
-  max-width: 26ch;
+  border-bottom: 1px solid transparent;
+}}
+.canais a:hover, .canais a:focus-visible {{
+  border-bottom-color: var(--amarelo);
+}}
+.canais a:focus-visible {{
+  outline: 2px solid var(--amarelo);
+  outline-offset: 3px;
 }}
 .status {{
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   color: var(--texto-fraco);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   margin: 0;
 }}
 .ponto {{
   width: 7px; height: 7px; border-radius: 50%;
-  background: var(--sucesso);
+  background: var(--vermelho);
   animation: pulsar 2.4s ease-in-out infinite;
 }}
 @media (prefers-reduced-motion: reduce) {{ .ponto {{ animation: none; }} }}
 @keyframes pulsar {{ 0%, 100% {{ opacity: 1; }} 50% {{ opacity: 0.35; }} }}
+
+.quem-somos {{
+  max-width: 640px;
+  margin: 0 auto 1.5rem;
+  padding: 0 1.25rem;
+}}
+.quem-somos p {{
+  background: var(--superficie);
+  border-left: 3px solid var(--amarelo);
+  padding: 0.9rem 1rem;
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--texto-fraco);
+}}
+
 .feed {{
   max-width: 640px;
   margin: 0 auto;
-  padding: 0 1.25rem 3rem;
+  padding: 0 1.25rem 2.5rem;
 }}
 .oferta {{
   display: flex;
@@ -176,7 +224,7 @@ body {{
   color: inherit;
 }}
 .oferta:focus-visible {{
-  outline: 2px solid var(--acento);
+  outline: 2px solid var(--vermelho);
   outline-offset: 4px;
 }}
 .foto-wrap {{
@@ -189,13 +237,14 @@ body {{
   object-fit: cover;
   border-radius: 6px;
   display: block;
-  background: #1c1f2b;
+  background: var(--superficie);
+  color: transparent;
 }}
 .tag {{
   position: absolute;
   left: -6px; bottom: -6px;
-  background: var(--acento);
-  color: #191a1f;
+  background: var(--vermelho);
+  color: #fff;
   font-weight: 600;
   font-size: 0.7rem;
   padding: 2px 7px 2px 10px;
@@ -223,10 +272,10 @@ body {{
   margin: 0;
 }}
 .preco {{
-  font-family: 'Fraunces', serif;
-  font-weight: 600;
-  font-size: 1.35rem;
-  color: var(--acento);
+  font-family: 'Anton', sans-serif;
+  font-weight: 400;
+  font-size: 1.3rem;
+  color: var(--vermelho);
 }}
 .preco-original {{
   font-size: 0.8rem;
@@ -236,7 +285,7 @@ body {{
 .cupom {{
   margin: 0.3rem 0 0;
   font-size: 0.75rem;
-  color: var(--sucesso);
+  color: var(--amarelo);
 }}
 .rodape {{
   max-width: 640px;
@@ -246,24 +295,37 @@ body {{
   font-size: 0.75rem;
   border-top: 1px solid var(--linha);
 }}
+.rodape p {{ margin: 0 0 0.4rem; }}
+.rodape p:last-child {{ margin-bottom: 0; }}
 @media (min-width: 520px) {{
   .foto-wrap {{ width: 108px; height: 108px; }}
-  .tagline {{ font-size: 1.8rem; }}
+  .tagline {{ font-size: 1.75rem; }}
 }}
 </style>
 </head>
 <body>
 <header class="topo">
-  <p class="marca">alerta promod</p>
-  <h1 class="tagline">As promoções que valem a pena, sem precisar procurar.</h1>
+  <img class="logo" src="logo.png" alt="Alerta PromoD">
+  <p class="tagline">As ofertas que valem a pena, garimpadas pra você.</p>
+  <p class="prova-social">Centenas de pessoas já recebem essas ofertas</p>
+  <div class="canais">
+    <a href="{LINK_TELEGRAM}" target="_blank" rel="noopener">Telegram</a>
+    <a href="{LINK_INSTAGRAM}" target="_blank" rel="noopener">Instagram</a>
+    <a href="{LINK_WHATSAPP}" target="_blank" rel="noopener">Canal do WhatsApp</a>
+  </div>
   <p class="status"><span class="ponto" aria-hidden="true"></span>atualiza automaticamente a cada 15 minutos</p>
 </header>
+
+<section class="quem-somos">
+  <p>Este feed é gerado por um robô que garimpa milhares de ofertas por dia na Amazon, no Mercado Livre e na Shopee. Cada oferta passa por um filtro de preço, desconto e avaliação, e é comparada com o histórico de preço antes de aparecer aqui — quando algo foge do padrão, uma pessoa confere manualmente antes de publicar.</p>
+</section>
 
 <main class="feed">
 {cards}
 </main>
 
 <footer class="rodape">
+  <p>Contém links de afiliado — ajuda a manter o projeto no ar sem custo pra você.</p>
   <p>Gerado automaticamente pelo Alerta PromoD · última atualização em {agora}</p>
 </footer>
 </body>

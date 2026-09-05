@@ -5,17 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Alerta PromoD — ofertas aprovadas agora</title>
 <meta name="description" content="Feed de ofertas aprovadas pelo Alerta PromoD na Amazon, Mercado Livre e Shopee, atualizado automaticamente.">
+<link rel="icon" type="image/png" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #14161f;
-  --linha: #262938;
-  --texto: #f1eee3;
-  --texto-fraco: #9298ab;
-  --acento: #ff7a3d;
-  --sucesso: #7dd8a4;
+  --bg: #201f1d;
+  --linha: #3a3532;
+  --superficie: #2a2825;
+  --texto: #f5f0e8;
+  --texto-fraco: #a89f93;
+  --vermelho: #e2131b;
+  --amarelo: #fac304;
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
@@ -28,42 +30,84 @@ body {
 .topo {
   max-width: 640px;
   margin: 0 auto;
-  padding: 2.5rem 1.25rem 1.5rem;
+  padding: 2.25rem 1.25rem 1.25rem;
+  text-align: center;
 }
-.marca {
-  font-weight: 600;
-  margin: 0 0 0.75rem;
-  font-size: 0.95rem;
-  color: var(--texto-fraco);
+.logo {
+  width: 168px;
+  height: auto;
+  display: block;
+  margin: 0 auto 1rem;
 }
 .tagline {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
+  font-family: 'Anton', sans-serif;
+  font-weight: 400;
+  font-size: 1.5rem;
+  letter-spacing: 0.01em;
+  color: var(--vermelho);
+  margin: 0 0 0.6rem;
+}
+.prova-social {
+  font-size: 0.85rem;
+  color: var(--texto-fraco);
+  margin: 0 0 1.1rem;
+}
+.canais {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.4rem;
+  margin: 0 0 1.25rem;
+}
+.canais a {
+  color: var(--texto);
+  text-decoration: none;
+  font-size: 0.88rem;
   font-weight: 500;
-  font-size: 1.6rem;
-  line-height: 1.25;
-  margin: 0 0 1rem;
-  max-width: 26ch;
+  border-bottom: 1px solid transparent;
+}
+.canais a:hover, .canais a:focus-visible {
+  border-bottom-color: var(--amarelo);
+}
+.canais a:focus-visible {
+  outline: 2px solid var(--amarelo);
+  outline-offset: 3px;
 }
 .status {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   color: var(--texto-fraco);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   margin: 0;
 }
 .ponto {
   width: 7px; height: 7px; border-radius: 50%;
-  background: var(--sucesso);
+  background: var(--vermelho);
   animation: pulsar 2.4s ease-in-out infinite;
 }
 @media (prefers-reduced-motion: reduce) { .ponto { animation: none; } }
 @keyframes pulsar { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+.quem-somos {
+  max-width: 640px;
+  margin: 0 auto 1.5rem;
+  padding: 0 1.25rem;
+}
+.quem-somos p {
+  background: var(--superficie);
+  border-left: 3px solid var(--amarelo);
+  padding: 0.9rem 1rem;
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--texto-fraco);
+}
+
 .feed {
   max-width: 640px;
   margin: 0 auto;
-  padding: 0 1.25rem 3rem;
+  padding: 0 1.25rem 2.5rem;
 }
 .oferta {
   display: flex;
@@ -74,7 +118,7 @@ body {
   color: inherit;
 }
 .oferta:focus-visible {
-  outline: 2px solid var(--acento);
+  outline: 2px solid var(--vermelho);
   outline-offset: 4px;
 }
 .foto-wrap {
@@ -87,13 +131,14 @@ body {
   object-fit: cover;
   border-radius: 6px;
   display: block;
-  background: #1c1f2b;
+  background: var(--superficie);
+  color: transparent;
 }
 .tag {
   position: absolute;
   left: -6px; bottom: -6px;
-  background: var(--acento);
-  color: #191a1f;
+  background: var(--vermelho);
+  color: #fff;
   font-weight: 600;
   font-size: 0.7rem;
   padding: 2px 7px 2px 10px;
@@ -121,10 +166,10 @@ body {
   margin: 0;
 }
 .preco {
-  font-family: 'Fraunces', serif;
-  font-weight: 600;
-  font-size: 1.35rem;
-  color: var(--acento);
+  font-family: 'Anton', sans-serif;
+  font-weight: 400;
+  font-size: 1.3rem;
+  color: var(--vermelho);
 }
 .preco-original {
   font-size: 0.8rem;
@@ -134,7 +179,7 @@ body {
 .cupom {
   margin: 0.3rem 0 0;
   font-size: 0.75rem;
-  color: var(--sucesso);
+  color: var(--amarelo);
 }
 .rodape {
   max-width: 640px;
@@ -144,20 +189,134 @@ body {
   font-size: 0.75rem;
   border-top: 1px solid var(--linha);
 }
+.rodape p { margin: 0 0 0.4rem; }
+.rodape p:last-child { margin-bottom: 0; }
 @media (min-width: 520px) {
   .foto-wrap { width: 108px; height: 108px; }
-  .tagline { font-size: 1.8rem; }
+  .tagline { font-size: 1.75rem; }
 }
 </style>
 </head>
 <body>
 <header class="topo">
-  <p class="marca">alerta promod</p>
-  <h1 class="tagline">As promoções que valem a pena, sem precisar procurar.</h1>
+  <img class="logo" src="logo.png" alt="Alerta PromoD">
+  <p class="tagline">As ofertas que valem a pena, garimpadas pra você.</p>
+  <p class="prova-social">Centenas de pessoas já recebem essas ofertas</p>
+  <div class="canais">
+    <a href="https://t.me/alertapromod" target="_blank" rel="noopener">Telegram</a>
+    <a href="https://www.instagram.com/alertapromod/" target="_blank" rel="noopener">Instagram</a>
+    <a href="https://www.whatsapp.com/channel/0029Vb8pNYnA89MrDPvqhs0R" target="_blank" rel="noopener">Canal do WhatsApp</a>
+  </div>
   <p class="status"><span class="ponto" aria-hidden="true"></span>atualiza automaticamente a cada 15 minutos</p>
 </header>
 
+<section class="quem-somos">
+  <p>Este feed é gerado por um robô que garimpa milhares de ofertas por dia na Amazon, no Mercado Livre e na Shopee. Cada oferta passa por um filtro de preço, desconto e avaliação, e é comparada com o histórico de preço antes de aparecer aqui — quando algo foge do padrão, uma pessoa confere manualmente antes de publicar.</p>
+</section>
+
 <main class="feed">
+
+    <a class="oferta" href="https://s.shopee.com.br/4qFPRiZKPB" target="_blank" rel="nofollow sponsored noopener">
+      <div class="foto-wrap">
+        <img src="https://cf.shopee.com.br/file/ab645a5cd9ed2d9301f3ed3a2c376502" alt="4 Pares Halter Original Hidro 1 Kg a 2 Kg No Plastico - 8 Halteres Profissional Promoção" loading="lazy" width="96" height="96">
+        <span class="tag">-20%</span>
+      </div>
+      <div class="info">
+        <p class="loja">Shopee</p>
+        <p class="titulo">4 Pares Halter Original Hidro 1 Kg a 2 Kg No Plastico - 8 Halteres Profissional Promoção</p>
+        <p class="precos">
+          <span class="preco">R$ 160,80</span>
+          
+        </p>
+        <p class="cupom">💰 Esse é o preço base, com opção de parcelamento.
+🚨 NO PIX PODE FICAR MAIS BARATOOOO!</p>
+      </div>
+    </a>
+
+    <a class="oferta" href="https://s.shopee.com.br/BTZt8r5sD" target="_blank" rel="nofollow sponsored noopener">
+      <div class="foto-wrap">
+        <img src="https://cf.shopee.com.br/file/br-11134207-820lj-mp9w8lepqpdsbd" alt="Par Halter Emborrachado 1kg a 5kg | Peso de Academia Musculação Halteres Fisioterapia Treino Em Casa" loading="lazy" width="96" height="96">
+        <span class="tag">-37%</span>
+      </div>
+      <div class="info">
+        <p class="loja">Shopee</p>
+        <p class="titulo">Par Halter Emborrachado 1kg a 5kg | Peso de Academia Musculação Halteres Fisioterapia Treino Em Casa</p>
+        <p class="precos">
+          <span class="preco">R$ 42,89</span>
+          
+        </p>
+        <p class="cupom">💰 Esse é o preço base, com opção de parcelamento.
+🚨 NO PIX PODE FICAR MAIS BARATOOOO!</p>
+      </div>
+    </a>
+
+    <a class="oferta" href="https://s.shopee.com.br/1A9gprjDA" target="_blank" rel="nofollow sponsored noopener">
+      <div class="foto-wrap">
+        <img src="https://cf.shopee.com.br/file/br-11134207-820ls-mlcnkp6a0g79a4" alt="Par Halter Academia Musculação Treino em Casa 5kg Cada Kit Halteres (Duas Unidades)" loading="lazy" width="96" height="96">
+        <span class="tag">-36%</span>
+      </div>
+      <div class="info">
+        <p class="loja">Shopee</p>
+        <p class="titulo">Par Halter Academia Musculação Treino em Casa 5kg Cada Kit Halteres (Duas Unidades)</p>
+        <p class="precos">
+          <span class="preco">R$ 79,90</span>
+          
+        </p>
+        <p class="cupom">💰 Esse é o preço base, com opção de parcelamento.
+🚨 NO PIX PODE FICAR MAIS BARATOOOO!</p>
+      </div>
+    </a>
+
+    <a class="oferta" href="https://www.amazon.com.br/Climatizador-Evaporativo-ZLX-20-Fun%C3%A7%C3%B5es-Zellox/dp/B0DZXX9PS8?tag=alertapromod-20" target="_blank" rel="nofollow sponsored noopener">
+      <div class="foto-wrap">
+        <img src="https://m.media-amazon.com/images/I/51h4P+Twj3L._AC_SY300_SX300_QL70_ML2_.jpg" alt="Climatizador de Ar Evaporativo ZLX-20 TS80W 20 Litros 220V 4 Funções Zellox" loading="lazy" width="96" height="96">
+        <span class="tag">-15%</span>
+      </div>
+      <div class="info">
+        <p class="loja">Amazon</p>
+        <p class="titulo">Climatizador de Ar Evaporativo ZLX-20 TS80W 20 Litros 220V 4 Funções Zellox</p>
+        <p class="precos">
+          <span class="preco">R$ 341,90</span>
+          <span class="preco-original">R$ 399,90</span>
+        </p>
+        <p class="cupom">💳 7x de R$ 54,28 sem juros
+🎟️ CUPOM:
+   • CUPOMNOAPP — R$10 off</p>
+      </div>
+    </a>
+
+    <a class="oferta" href="https://www.mercadolivre.com.br/kit-6-tapete-higienico-lavavel-caes-cachorro-grande-xixi-dog/up/MLBU1456379800?matt_tool=65481811&amp;matt_word=darlankawakami" target="_blank" rel="nofollow sponsored noopener">
+      <div class="foto-wrap">
+        <img src="https://http2.mlstatic.com/D_NQ_NP_2X_649926-MLB115485707683_082026-F-kit-6-tapete-higienico-lavavel-caes-cachorro-grande-xixi-dog.webp" alt="Kit 6 Tapetes Higiênicos Laváveis Cães" loading="lazy" width="96" height="96">
+        <span class="tag">-19%</span>
+      </div>
+      <div class="info">
+        <p class="loja">Mercado Livre</p>
+        <p class="titulo">Kit 6 Tapetes Higiênicos Laváveis Cães</p>
+        <p class="precos">
+          <span class="preco">R$ 80,67</span>
+          <span class="preco-original">R$ 99,00</span>
+        </p>
+        
+      </div>
+    </a>
+
+    <a class="oferta" href="https://www.amazon.com.br/dp/B0H6H77Y3Y?r&amp;tag=alertapromod-20" target="_blank" rel="nofollow sponsored noopener">
+      <div class="foto-wrap">
+        <img src="https://m.media-amazon.com/images/I/51jH-4I0RBL._AC_SX300_SY300_QL70_ML2_.jpg" alt="Pote Vidro Transparente 650ml Retangular" loading="lazy" width="96" height="96">
+        <span class="tag">-17%</span>
+      </div>
+      <div class="info">
+        <p class="loja">Amazon</p>
+        <p class="titulo">Pote Vidro Transparente 650ml Retangular</p>
+        <p class="precos">
+          <span class="preco">R$ 19,99</span>
+          <span class="preco-original">R$ 23,99</span>
+        </p>
+        <p class="cupom">🎟️ CUPOM:
+   • CUPOMNOAPP — R$10 off</p>
+      </div>
+    </a>
 
     <a class="oferta" href="https://produto.mercadolivre.com.br/MLB-4332011417-chinelo-qix-full-casual-adulto-masculino-feminino-liso-eva-_JM?matt_tool=65481811&amp;matt_word=darlankawakami" target="_blank" rel="nofollow sponsored noopener">
       <div class="foto-wrap">
@@ -222,112 +381,11 @@ body {
         
       </div>
     </a>
-
-    <a class="oferta" href="https://s.shopee.com.br/5foWQ9bcqd" target="_blank" rel="nofollow sponsored noopener">
-      <div class="foto-wrap">
-        <img src="https://cf.shopee.com.br/file/sg-11134201-8259x-mrvatflnqjgo1e" alt="8 Conjunto de esfregão plano, balde dobrável e 6 panos de esfregão, com rodo automático." loading="lazy" width="96" height="96">
-        <span class="tag">-43%</span>
-      </div>
-      <div class="info">
-        <p class="loja">Shopee</p>
-        <p class="titulo">8 Conjunto de esfregão plano, balde dobrável e 6 panos de esfregão, com rodo automático.</p>
-        <p class="precos">
-          <span class="preco">R$ 73,99</span>
-          
-        </p>
-        <p class="cupom">💰 Esse é o preço base, com opção de parcelamento.
-🚨 NO PIX PODE FICAR MAIS BARATOOOO!</p>
-      </div>
-    </a>
-
-    <a class="oferta" href="https://s.shopee.com.br/5q7wcSazVe" target="_blank" rel="nofollow sponsored noopener">
-      <div class="foto-wrap">
-        <img src="https://cf.shopee.com.br/file/br-11134207-7r98o-mdajp8ugl2bl82" alt="Rodo de Limpeza Mop Limpeza Fácil Mope Esfregão Torção Refil Em Espuma Limpa Seca Rodo Mágico" loading="lazy" width="96" height="96">
-        <span class="tag">-61%</span>
-      </div>
-      <div class="info">
-        <p class="loja">Shopee</p>
-        <p class="titulo">Rodo de Limpeza Mop Limpeza Fácil Mope Esfregão Torção Refil Em Espuma Limpa Seca Rodo Mágico</p>
-        <p class="precos">
-          <span class="preco">R$ 39,89</span>
-          
-        </p>
-        <p class="cupom">💰 Esse é o preço base, com opção de parcelamento.
-🚨 NO PIX PODE FICAR MAIS BARATOOOO!</p>
-      </div>
-    </a>
-
-    <a class="oferta" href="https://s.shopee.com.br/5VV6DqcGBY" target="_blank" rel="nofollow sponsored noopener">
-      <div class="foto-wrap">
-        <img src="https://cf.shopee.com.br/file/sg-11134201-7rdw8-mday4s2kohrt95" alt="Esfregao Rodo Limpeza Triangulo Mop Giratorio 360° Rodo" loading="lazy" width="96" height="96">
-        <span class="tag">-59%</span>
-      </div>
-      <div class="info">
-        <p class="loja">Shopee</p>
-        <p class="titulo">Esfregao Rodo Limpeza Triangulo Mop Giratorio 360° Rodo</p>
-        <p class="precos">
-          <span class="preco">R$ 23,98</span>
-          
-        </p>
-        <p class="cupom">💰 Esse é o preço base, com opção de parcelamento.
-🚨 NO PIX PODE FICAR MAIS BARATOOOO!</p>
-      </div>
-    </a>
-
-    <a class="oferta" href="https://s.shopee.com.br/6VNdPgYS9i" target="_blank" rel="nofollow sponsored noopener">
-      <div class="foto-wrap">
-        <img src="https://cf.shopee.com.br/file/br-11134207-7r98o-m4dzg0ylgwmtb8" alt="Rodo Spray Magico Esfregão Spray Mop Rodo Limpa Fácil Borrifador Reservatório Promoção + 3 REFIL" loading="lazy" width="96" height="96">
-        <span class="tag">-54%</span>
-      </div>
-      <div class="info">
-        <p class="loja">Shopee</p>
-        <p class="titulo">Rodo Spray Magico Esfregão Spray Mop Rodo Limpa Fácil Borrifador Reservatório Promoção + 3 REFIL</p>
-        <p class="precos">
-          <span class="preco">R$ 45,99</span>
-          
-        </p>
-        <p class="cupom">💰 Esse é o preço base, com opção de parcelamento.
-🚨 NO PIX PODE FICAR MAIS BARATOOOO!</p>
-      </div>
-    </a>
-
-    <a class="oferta" href="https://s.shopee.com.br/60RMolaMAb" target="_blank" rel="nofollow sponsored noopener">
-      <div class="foto-wrap">
-        <img src="https://cf.shopee.com.br/file/sg-11134201-82608-mlgzjafqng8wd2" alt="Mop Spray Rodo Magico Esfregão Com Reservatório Rodo de Limpeza Piso Com Refis Microfibra a Escolha" loading="lazy" width="96" height="96">
-        <span class="tag">-63%</span>
-      </div>
-      <div class="info">
-        <p class="loja">Shopee</p>
-        <p class="titulo">Mop Spray Rodo Magico Esfregão Com Reservatório Rodo de Limpeza Piso Com Refis Microfibra a Escolha</p>
-        <p class="precos">
-          <span class="preco">R$ 23,99</span>
-          
-        </p>
-        <p class="cupom">💰 Esse é o preço base, com opção de parcelamento.
-🚨 NO PIX PODE FICAR MAIS BARATOOOO!</p>
-      </div>
-    </a>
-
-    <a class="oferta" href="https://s.shopee.com.br/6Akn14Zipc" target="_blank" rel="nofollow sponsored noopener">
-      <div class="foto-wrap">
-        <img src="https://cf.shopee.com.br/file/sg-11134201-7rfez-m3jwwof7lr8b65" alt="Rodo Mop Flat 2 Refis Esfregão Com Balde Rodo Mágico Lava Seca Tira Pó Limpeza Profissional" loading="lazy" width="96" height="96">
-        <span class="tag">-16%</span>
-      </div>
-      <div class="info">
-        <p class="loja">Shopee</p>
-        <p class="titulo">Rodo Mop Flat 2 Refis Esfregão Com Balde Rodo Mágico Lava Seca Tira Pó Limpeza Profissional</p>
-        <p class="precos">
-          <span class="preco">R$ 41,93</span>
-          
-        </p>
-        <p class="cupom">💰 Esse é o preço base, com opção de parcelamento.
-🚨 NO PIX PODE FICAR MAIS BARATOOOO!</p>
-      </div>
-    </a>
 </main>
 
 <footer class="rodape">
-  <p>Gerado automaticamente pelo Alerta PromoD · última atualização em 05/09/2026 16:15</p>
+  <p>Contém links de afiliado — ajuda a manter o projeto no ar sem custo pra você.</p>
+  <p>Gerado automaticamente pelo Alerta PromoD · última atualização em 05/09/2026 16:18</p>
 </footer>
 </body>
 </html>
