@@ -22,6 +22,12 @@ LINK_TELEGRAM = "https://t.me/alertapromod"
 LINK_INSTAGRAM = "https://www.instagram.com/alertapromod/"
 LINK_WHATSAPP = "https://www.whatsapp.com/channel/0029Vb8pNYnA89MrDPvqhs0R"
 
+# Ícones simples (SVG inline) pros botões de canal — genéricos, não são os
+# logos oficiais, só representações comuns de "enviar"/"câmera"/"conversa".
+ICONE_TELEGRAM = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22 11 13 2 9z"/></svg>'
+ICONE_INSTAGRAM = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="0.6" fill="currentColor" stroke="none"/></svg>'
+ICONE_WHATSAPP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-8.4 8.4 8.3 8.3 0 0 1-3.8-.9L3 21l1.9-5.8a8.3 8.3 0 0 1-.9-3.7A8.4 8.4 0 0 1 12.5 3a8.4 8.4 0 0 1 8.4 8.4z"/></svg>'
+
 # Trecho genérico que a Shopee usa em quase toda oferta — repetir ele
 # igual em vários cards seguidos passa impressão de spam, então vira
 # um selinho curto em vez do parágrafo inteiro.
@@ -177,8 +183,10 @@ body {{
 .tagline {{
   font-family: 'Anton', sans-serif;
   font-weight: 400;
-  font-size: 1.5rem;
+  font-size: 1.35rem;
+  text-transform: uppercase;
   letter-spacing: 0.01em;
+  line-height: 1.25;
   color: var(--vermelho);
   margin: 0 0 0.6rem;
 }}
@@ -191,22 +199,34 @@ body {{
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 1.4rem;
+  gap: 0.6rem;
   margin: 0 0 1.25rem;
 }}
 .canais a {{
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: var(--superficie);
+  border: 1px solid var(--linha);
+  border-radius: 999px;
+  padding: 0.5rem 1rem;
   color: var(--texto);
   text-decoration: none;
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   font-weight: 500;
-  border-bottom: 1px solid transparent;
+}}
+.canais svg {{
+  width: 16px;
+  height: 16px;
+  flex: none;
 }}
 .canais a:hover, .canais a:focus-visible {{
-  border-bottom-color: var(--amarelo);
+  border-color: var(--amarelo);
+  color: var(--amarelo);
 }}
 .canais a:focus-visible {{
   outline: 2px solid var(--amarelo);
-  outline-offset: 3px;
+  outline-offset: 2px;
 }}
 .status {{
   display: inline-flex;
@@ -224,19 +244,46 @@ body {{
 @media (prefers-reduced-motion: reduce) {{ .ponto {{ animation: none; }} }}
 @keyframes pulsar {{ 0%, 100% {{ opacity: 1; }} 50% {{ opacity: 0.35; }} }}
 
-.quem-somos {{
+.recursos {{
   max-width: 720px;
   margin: 0 auto 1.5rem;
   padding: 0 1.25rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
 }}
-.quem-somos p {{
+.recurso {{
   background: var(--superficie);
-  border-left: 3px solid var(--amarelo);
-  padding: 0.9rem 1rem;
+  border: 1px solid var(--linha);
+  border-radius: 12px;
+  padding: 0.9rem 0.7rem;
+}}
+.recurso .icone {{
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--linha);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  margin: 0 0 0.55rem;
+}}
+.recurso h2 {{
+  margin: 0 0 0.3rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.25;
+}}
+.recurso p {{
   margin: 0;
-  font-size: 0.85rem;
-  line-height: 1.55;
+  font-size: 0.68rem;
+  line-height: 1.4;
   color: var(--texto-fraco);
+}}
+@media (max-width: 380px) {{
+  .recurso h2 {{ font-size: 0.72rem; }}
+  .recurso p {{ display: none; }}
 }}
 
 .feed {{
@@ -359,15 +406,29 @@ body {{
   <p class="tagline">As ofertas que valem a pena, garimpadas pra você.</p>
   <p class="prova-social">Centenas de pessoas já recebem essas ofertas</p>
   <div class="canais">
-    <a href="{LINK_TELEGRAM}" target="_blank" rel="noopener">Telegram</a>
-    <a href="{LINK_INSTAGRAM}" target="_blank" rel="noopener">Instagram</a>
-    <a href="{LINK_WHATSAPP}" target="_blank" rel="noopener">Canal do WhatsApp</a>
+    <a href="{LINK_TELEGRAM}" target="_blank" rel="noopener">{ICONE_TELEGRAM}Telegram</a>
+    <a href="{LINK_INSTAGRAM}" target="_blank" rel="noopener">{ICONE_INSTAGRAM}Instagram</a>
+    <a href="{LINK_WHATSAPP}" target="_blank" rel="noopener">{ICONE_WHATSAPP}WhatsApp</a>
   </div>
   <p class="status"><span class="ponto" aria-hidden="true"></span>atualiza automaticamente a cada 15 minutos</p>
 </header>
 
-<section class="quem-somos">
-  <p>Este feed é gerado por um robô que garimpa milhares de ofertas por dia na Amazon, no Mercado Livre e na Shopee. Cada oferta passa por um filtro de preço, desconto e avaliação, e é comparada com o histórico de preço antes de aparecer aqui — quando algo foge do padrão, uma pessoa confere manualmente antes de publicar.</p>
+<section class="recursos">
+  <div class="recurso">
+    <div class="icone" aria-hidden="true">🤖</div>
+    <h2>Filtro automático</h2>
+    <p>Preço, desconto e avaliação verificados antes de aparecer aqui.</p>
+  </div>
+  <div class="recurso">
+    <div class="icone" aria-hidden="true">📈</div>
+    <h2>Verificação de preço</h2>
+    <p>Comparado com o histórico da semana antes de virar oferta.</p>
+  </div>
+  <div class="recurso">
+    <div class="icone" aria-hidden="true">🙋</div>
+    <h2>Revisão humana</h2>
+    <p>Quando algo foge do padrão, uma pessoa confere manualmente.</p>
+  </div>
 </section>
 
 <main class="feed">
