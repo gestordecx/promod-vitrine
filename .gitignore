@@ -1,0 +1,4 @@
+aplicar_*.py
+*.bkp_*
+*.bak_*
+vitrine_cron.log
