@@ -10,8 +10,25 @@ import os
 import re
 import sqlite3
 import subprocess
+import sys
 from datetime import datetime
 from pathlib import Path
+
+# extrair_produto_id() é lógica pura (regex), sem efeito colateral no import
+# -- diferente de bot_promod.py, que sobe um TimedRotatingFileHandler sobre
+# promod.log no nível do módulo (por isso essa função é importada direto,
+# mas menor_preco_historico() é duplicada abaixo em vez de importada).
+sys.path.insert(0, os.path.expanduser("~/projetos/alertapromod"))
+from extratores.comum import extrair_produto_id
+
+AMOSTRA_MINIMA_DIAS_MENOR_PRECO = 15  # mesmo valor de config.py (bot_promod), mantido em sincronia manual
+LOJA_PARA_DOMINIO = {
+    "Amazon": "amazon.com.br",
+    "Mercado Livre": "mercadolivre.com.br",
+    # Shopee fica de fora (08/09/2026): link_afiliado é encurtado
+    # (s.shopee.com.br/...) e não contém shopId/itemId sem resolver
+    # o redirect via rede -- decisão: deixar Shopee sem o selo por ora.
+}
 
 # --- Configuração ---
 DB_PATH = os.path.expanduser("~/projetos/alertapromod/promod.db")
@@ -103,6 +120,53 @@ def buscar_ofertas():
     return ofertas
 
 
+def menor_preco_historico_vitrine(produto_id, loja):
+    """Versão somente-leitura de menor_preco_historico() (bot_promod.py) -- duplicada,
+    não importada, porque importar bot_promod.py disparia de novo o
+    TimedRotatingFileHandler que ele sobe no nível do módulo (mesmo motivo de
+    dashboard.py nunca importar bot_promod.py). Retorna (None, 0, 0) se não
+    houver produto_id ou nenhum registro anterior."""
+    if not produto_id:
+        return None, 0, 0
+    conn = sqlite3.connect(f"file:{DB_PATH}?mode=ro", uri=True)
+    cur = conn.cursor()
+    hoje = datetime.now().strftime("%Y-%m-%d")
+    cur.execute(
+        """
+        SELECT MIN(preco_atual), COUNT(DISTINCT data_dia), COUNT(DISTINCT preco_atual)
+        FROM historico_precos
+        WHERE produto_id = ? AND loja = ? AND data_dia < ?
+        """,
+        (produto_id, loja, hoje),
+    )
+    menor, dias_distintos, precos_distintos = cur.fetchone()
+    conn.close()
+    return menor, (dias_distintos or 0), (precos_distintos or 0)
+
+
+def calcular_selo_queda_historica(oferta):
+    """Selo visual (não filtra/esconde nada) pra Amazon/ML: mostra quando o preço
+    atual é o menor (ou empata com o menor) já registrado no histórico daquele
+    produto. Shopee fica de fora por enquanto (ver LOJA_PARA_DOMINIO)."""
+    loja = oferta.get("loja")
+    dominio = LOJA_PARA_DOMINIO.get(loja)
+    if not dominio:
+        return []
+    produto_id = extrair_produto_id(oferta.get("link_afiliado") or "", dominio)
+    if not produto_id:
+        return []
+    preco = oferta.get("preco") or 0
+    if not preco:
+        return []
+    menor_historico, dias_amostra_total, precos_distintos = menor_preco_historico_vitrine(produto_id, loja)
+    houve_variacao = menor_historico is not None and (preco < menor_historico or precos_distintos >= 2)
+    if menor_historico is not None and preco <= menor_historico and houve_variacao:
+        if dias_amostra_total >= AMOSTRA_MINIMA_DIAS_MENOR_PRECO:
+            return ["🔥 Menor preço já registrado"]
+        return ["📉 Menor preço monitorado até agora"]
+    return []
+
+
 def fmt_preco(valor):
     if not valor:
         valor = 0
@@ -155,8 +219,9 @@ def montar_card(oferta):
     else:
         img_html = '<div class="foto-vazia" aria-hidden="true"></div>'
 
+    lista_badges = calcular_selo_queda_historica(oferta) + montar_badges(oferta)
     badges_html = "".join(
-        f'<span class="badge">{html.escape(b)}</span>' for b in montar_badges(oferta)
+        f'<span class="badge">{html.escape(b)}</span>' for b in lista_badges
     )
     avaliacao_html = montar_avaliacao_html(oferta)
 
