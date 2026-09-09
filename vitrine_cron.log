@@ -1967,3 +1967,10 @@ Your branch is up to date with 'origin/main'.
 nothing to commit, working tree clean
 12 ofertas escritas em index.html.
 Nada novo para publicar (sem mudanças desde a última execução).
+[main 73bbad5] Atualiza vitrine - 08/09/2026 21:15
+ 3 files changed, 7 insertions(+), 1 deletion(-)
+ create mode 100644 __pycache__/gerar_vitrine.cpython-312.pyc
+To github.com:gestordecx/promod-vitrine.git
+   758a742..73bbad5  main -> main
+12 ofertas escritas em index.html.
+Vitrine publicada com sucesso.
