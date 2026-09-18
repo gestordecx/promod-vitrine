@@ -33,7 +33,7 @@ LOJA_PARA_DOMINIO = {
 # --- Configuração ---
 DB_PATH = os.path.expanduser("~/projetos/alertapromod/promod.db")
 REPO_DIR = Path(__file__).resolve().parent  # pasta onde este script está
-QTD_OFERTAS = 12
+QTD_OFERTAS = 60
 
 LINK_TELEGRAM = "https://t.me/alertapromod"
 LINK_INSTAGRAM = "https://www.instagram.com/alertapromod/"
@@ -58,7 +58,7 @@ def limpar_tags_telegram(texto):
 
 
 LOJAS = ["Amazon", "Mercado Livre", "Shopee"]
-QTD_POR_LOJA = 4  # 4+4+4 = 12 -- distribuicao igual entre as 3 lojas (decisao 08/09/2026,
+QTD_POR_LOJA = 20  # 20+20+20 = 60 -- distribuicao igual entre as 3 lojas (decisao 08/09/2026,
                   # evita que uma loja com mais volume de aprovacao (ex: Shopee) domine a vitrine)
 
 _COLUNAS_OFERTA = """id, titulo, link_afiliado, preco, preco_original, desconto,
