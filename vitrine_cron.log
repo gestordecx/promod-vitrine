@@ -18413,3 +18413,22 @@ To github.com:gestordecx/promod-vitrine.git
    5c6b2f3..bcd8fe1  main -> main
 60 ofertas escritas em index.html.
 Vitrine publicada com sucesso.
+[main 889b9bd] Atualiza vitrine - 07/10/2026 14:00
+ 2 files changed, 128 insertions(+), 119 deletions(-)
+remote: Internal Server Error        
+remote: Request ID FC86:202EFC:0CEF:2C8D:6AC67A96        
+remote: Time 2026-10-07T17:00:10Z
+To github.com:gestordecx/promod-vitrine.git
+ ! [remote rejected] main -> main (Internal Server Error)
+error: failed to push some refs to 'github.com:gestordecx/promod-vitrine.git'
+60 ofertas escritas em index.html.
+Traceback (most recent call last):
+  File "/home/darlan/projetos/promod-vitrine/gerar_vitrine.py", line 580, in <module>
+    main()
+  File "/home/darlan/projetos/promod-vitrine/gerar_vitrine.py", line 576, in main
+    publicar_no_git()
+  File "/home/darlan/projetos/promod-vitrine/gerar_vitrine.py", line 564, in publicar_no_git
+    subprocess.run(["git", "push"], cwd=REPO_DIR, check=True)
+  File "/usr/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['git', 'push']' returned non-zero exit status 1.
