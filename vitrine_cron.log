@@ -43348,3 +43348,10 @@ To github.com:gestordecx/promod-vitrine.git
    d008d61e..36b16f8c  main -> main
 60 ofertas escritas em index.html.
 Vitrine publicada com sucesso.
+[main 6ab494bb] Atualiza vitrine - 26/11/2026 15:15
+ 3 files changed, 488 insertions(+), 483 deletions(-)
+ delete mode 100644 __pycache__/gerar_vitrine.cpython-312.pyc
+To github.com:gestordecx/promod-vitrine.git
+   36b16f8c..6ab494bb  main -> main
+60 ofertas escritas em index.html.
+Vitrine publicada com sucesso.
